@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Hiring Mixer & Business Social",
+    "date": "6/27/2019",
+    "time": "3pm-6pm",
+    "location": "American Social",
+    "address": "601 S Harbour Island Blvd #107, Tampa, FL 33602",
+    "meetup_rsvp": "https://www.meetup.com/Tampa-Asian-American-professionals-Meetup/events/261651177/",
+    "message": "Tampa's finest businesses will be seeking Asian American Talent to join their team. Bring your resumes and/or business cards and network. You do not have to be actively seeking a new job to attend.",
+    "number": 5
+  },
+  {
+    "name": "Dance Party",
+    "date": "6/20/2019",
+    "time": "3pm-6pm",
+    "location": "Tampa Convention Center Social",
+    "address": "601 S Harbour Island Blvd #107, Tampa, FL 33602",
+    "meetup_rsvp": "https://www.meetup.com/Tampa-Asian-American-professionals-Meetup/events/261651177/",
+    "message": "Show people how you can dance at this dance party right at the Tampa Convention center.",
+    "number": 4
+  },
+  {
+    "name": "Disney World Day Trip",
+    "date": "6/17/2019",
+    "time": "3pm-6pm",
+    "location": "Tampa Convention Center Social",
+    "address": "601 S Harbour Island Blvd #107, Tampa, FL 33602",
+    "meetup_rsvp": "https://www.meetup.com/Tampa-Asian-American-professionals-Meetup/events/261651177/",
+    "message": "Show people how you can dance at this dance party right at the Tampa Convention center.",
+    "number": 3
+  },
+  {
+    "name": "Raymond James information session ",
+    "date": "2/11/2019",
+    "time": "3pm-6pm",
+    "location": "Tampa Convention Center Social",
+    "address": "601 S Harbour Island Blvd #107, Tampa, FL 33602",
+    "meetup_rsvp": "https://www.meetup.com/Tampa-Asian-American-professionals-Meetup/events/261651177/",
+    "message": "Show people how you can dance at this dance party right at the Tampa Convention center.",
+    "number": 2
+  },
+  {
+    "name": "Bolts game",
+    "date": "1/11/2019",
+    "time": "3pm-6pm",
+    "location": "Tampa Convention Center Social",
+    "address": "601 S Harbour Island Blvd #107, Tampa, FL 33602",
+    "meetup_rsvp": "https://www.meetup.com/Tampa-Asian-American-professionals-Meetup/events/261651177/",
+    "message": "Show people how you can dance at this dance party right at the Tampa Convention center.",
+    "number": 1
+  }
+]
