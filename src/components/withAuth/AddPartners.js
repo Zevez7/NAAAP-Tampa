@@ -18,6 +18,10 @@ class AddPartners extends Component {
     };
   }
 
+  toInputUppercase = e => {
+    e.target.value = e.target.value.toLowerCase();
+  };
+
   handleChange = e => {
     const itemName = e.target.name;
     const itemValue = e.target.value;
@@ -151,16 +155,19 @@ class AddPartners extends Component {
                 <div className="form-group">
                   <label htmlFor="logo">Logo</label>
                   <input
-                    className="form-control"
+                    className="form-control text-lowercase"
                     type="logo"
                     name="logo"
                     placeholder="Logo"
                     value={logo}
                     onChange={this.handleChange}
+                    onInput={this.toInputUppercase}
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="website">Website</label>
+                  <label htmlFor="website">
+                    Website (example: https://www.google.com/)
+                  </label>
                   <input
                     className="form-control"
                     type="website"

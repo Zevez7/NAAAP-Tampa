@@ -41,7 +41,7 @@ const withPartnersList = WrappedComponent => {
       );
     }
   }
-  return withPartnersList;
+  return WithPartnersList;
 };
 
 export default withPartnersList;

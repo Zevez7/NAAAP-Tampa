@@ -151,11 +151,14 @@ img.social {
   padding: 0.2rem;
 }
 .svg {
+  height: 100px;
+  width: auto;
+  pointer-events: none;
+  text-align: center;
 }
-
 /* Partner */
 .businesslogo {
-  height: 125px;
+  height: 100px;
   width: auto;
   text-align: center;
 }

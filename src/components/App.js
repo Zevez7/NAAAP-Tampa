@@ -28,7 +28,7 @@ class Home extends Component {
     return (
       <>
         <div className="col-12 top-placeholder" />
-        <Hero image="lovehero" />
+        <Hero image="lovehero-min" />
         <Content />
         <Social />
       </>

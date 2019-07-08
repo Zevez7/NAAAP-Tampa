@@ -32,10 +32,12 @@ export default class Social extends Component {
           <div className="row justify-content-center pt-5">
             <div className="col-12 h4 ">
               Meetup:
-              <a href="http://meetu.ps/c/4dcvn/tptyG/f"> NAAAP - Tampa</a>
+              <a href="https://www.meetup.com/Tampa-Asian-American-professionals-Meetup">
+                NAAAP - Tampa
+              </a>
             </div>
             <div className="col-12 img-container">
-              <a href="http://meetu.ps/c/4dcvn/tptyG/f">
+              <a href="https://www.meetup.com/Tampa-Asian-American-professionals-Meetup">
                 <img
                   className="social center rounded shadow"
                   src={require(`../images/meetup1.png`)}

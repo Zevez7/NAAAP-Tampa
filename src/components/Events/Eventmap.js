@@ -41,8 +41,8 @@ class Eventmap extends Component {
         .slice(this.sliceNumber())
         .slice(0, `${this.props.home_number}`)
         .map(item => (
-          <div className="row justify-content-start my-4" key={item.number}>
-            <div className="col-3 px-3 pt-4 bg-gray shadow-sm">
+          <div className="row justify-content-center my-4" key={item.number}>
+            <div className="col-lg-3 col-4 px-3 pt-4 bg-gray shadow-custom">
               <div className="col-12 text-center p-0">
                 {dateFormat(item.date, "d")}
               </div>
@@ -50,7 +50,7 @@ class Eventmap extends Component {
                 {dateFormat(item.date, "LLL")}
               </div>
             </div>
-            <div className="col-9 px-3 py-1">
+            <div className="col-lg-9 col-7 px-4 py-1">
               <div className="h3">{item.name}</div>
               <div>
                 {dateFormat(item.date, "DDDD")} | {item.time}
@@ -61,7 +61,7 @@ class Eventmap extends Component {
                 <a href={item.meetup_rsvp}>RSVP @ MeetUp.com</a>
               </div>
             </div>
-            <div className="pt-3">
+            <div className="col-12 pt-4">
               <p>{item.message}</p>
             </div>
           </div>
