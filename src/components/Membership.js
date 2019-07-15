@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-// import { FaUser } from "react-icons/fa";
-// import data_members from "../data/data_members.json";
-import { DateTime } from "luxon";
 
-export default class Membership extends Component {
+import { DateTime } from "luxon";
+import withAuth from "./HOC/withAuth";
+
+class Membership extends Component {
   constructor(props) {
     super(props);
 
@@ -49,20 +49,22 @@ export default class Membership extends Component {
           </div>
 
           <div className="row pt-5">
-            <div className="col-12 h2 gradient ">Start Date</div>
-          </div>
-          <div className="row p-4">
-            <div className="col-12 text-center h2">July 1, 2019</div>
+            <div className="col-6">
+              <div className="col-12 h3 text-center gradient ">Start Date</div>{" "}
+              <div className="col-12 text-center h4">July 1, 2019</div>
+            </div>
+            <div className="col-6">
+              <div className="col-12 h3 text-center gradient ">End Date</div>
+              <div className="col-12 text-center h4">July 1, 2020</div>
+            </div>
           </div>
 
-          <div className="row pt-5">
-            <div className="col-12 h2 gradient ">End Date</div>
-          </div>
-          <div className="row p-4">
-            <div className="col-12 text-center h2">July 1, 2020</div>
-          </div>
+          <div className="row p-4" />
+          <div className="row p-4" />
         </div>
       </main>
     );
   }
 }
+
+export default withAuth(Membership, "/signin");

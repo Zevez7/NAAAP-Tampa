@@ -18,8 +18,11 @@ import SignIn from "./SignIn";
 
 import firebase from "./Firebase";
 import Membership from "./Membership";
-import AddEvents from "./withAuth/AddEvents";
-import AddPartners from "./withAuth/AddPartners";
+import AddEvents from "./Events/AddEvents";
+import AddPartners from "./Partners/AddPartners";
+import Jobs from "./Jobs/Jobs";
+import AddJobs from "./Jobs/Addjobs";
+import JobDetails from "./Jobs/JobDetails";
 
 // this allows link that is clicked to start at the top of the window
 
@@ -89,6 +92,35 @@ export default class App extends Component {
       });
     });
 
+    const refJobs = firebase.database().ref("jobs/");
+    refJobs.on("value", snapshot => {
+      let jobs = snapshot.val();
+      let jobList = [];
+
+      for (let item in jobs) {
+        jobList.push({
+          JobID: item,
+          Title: jobs[item].Title,
+          Company: jobs[item].Company,
+          Address: jobs[item].Address,
+          Description: jobs[item].Description,
+          Skills: jobs[item].Skills,
+          Type: jobs[item].Type,
+          Pay: jobs[item].Pay,
+          Experience: jobs[item].Experience,
+          Authorization: jobs[item].Authorization,
+          Benefits: jobs[item].Benefits,
+          Language: jobs[item].Language,
+          Contact_name: jobs[item].Contact_name,
+          Contact: jobs[item].Contact,
+          Date: jobs[item].Date
+        });
+      }
+      this.setState({
+        jobList: jobList
+      });
+    });
+
     // when firebase is signed in onAuthStateChanged is triggered. FBUser is the currentUser object that is passed into the argument.
     firebase.auth().onAuthStateChanged(FBUser => {
       // if there's a user. Set the state of the user to these values
@@ -129,7 +161,14 @@ export default class App extends Component {
   };
 
   render() {
-    const { user, displayName, userID, eventsList, partnerList } = this.state;
+    const {
+      user,
+      displayName,
+      userID,
+      eventsList,
+      partnerList,
+      jobList
+    } = this.state;
 
     return (
       <Router>
@@ -164,7 +203,10 @@ export default class App extends Component {
                 path="/partners"
                 render={props => <Partners {...props} user={user} />}
               />
-
+              <Route
+                path="/jobs"
+                render={props => <Jobs {...props} user={user} />}
+              />
               <Route
                 exact
                 path="/addevents"
@@ -177,7 +219,6 @@ export default class App extends Component {
                   />
                 )}
               />
-
               <Route
                 exact
                 path="/addpartners"
@@ -189,6 +230,35 @@ export default class App extends Component {
                     partnerList={partnerList}
                   />
                 )}
+              />
+
+              <Route
+                exact
+                path="/addjobs"
+                render={props => (
+                  <AddJobs
+                    {...props}
+                    displayName={displayName}
+                    userID={userID}
+                    jobList={jobList}
+                  />
+                )}
+              />
+
+              <Route
+                exact
+                path="/jobdetails/:id"
+                render={props => {
+                  let jobDetailIds = props.location.pathname.replace(
+                    "/jobdetails/",
+                    ""
+                  );
+
+                  let jobIndex = jobList.findIndex(
+                    item => item.JobID === jobDetailIds
+                  );
+                  return <JobDetails {...props} jobItem={jobList[jobIndex]} />;
+                }}
               />
 
               <Route

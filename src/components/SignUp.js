@@ -143,12 +143,7 @@ export default class Register extends Component {
                 )}
 
                 {redirect_signup_success && <Redirect to="/" />}
-                <div className="col-12 top-placeholder" />
-                <div className="col-12 top-placeholder" />
-                <div className="col-12 top-placeholder" />
-                <div className="col-12 top-placeholder" />
-                <div className="col-12 top-placeholder" />
-                <div className="col-12 top-placeholder" />
+       
               </form>
             </div>
           </div>

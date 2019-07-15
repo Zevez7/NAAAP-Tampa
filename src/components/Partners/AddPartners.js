@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import FormError from "../FormError";
-import withAuth from "./withAuth";
+import withAuth from "../HOC/withAuth";
 
 import firebase from "../Firebase";
 
@@ -14,7 +14,9 @@ class AddPartners extends Component {
       website: "",
       logo: "",
       errorMessage: null,
-      activeIndex: null
+      activeIndex: null,
+      edit: false,
+      setActiveIndexEdit: null
     };
   }
 
@@ -51,6 +53,42 @@ class AddPartners extends Component {
     });
   };
 
+  handelEdit = e => {
+    e.preventDefault();
+    this.saveEdit();
+
+    this.setState({
+      name: "",
+      location: "",
+      website: "",
+      logo: "",
+      edit: false
+    });
+  };
+
+  saveEdit = () => {
+    const ref = firebase.database().ref(`partners/${this.state.partnerID}`);
+    ref.update({
+      name: this.state.name,
+      location: this.state.location,
+      website: this.state.website,
+      logo: this.state.logo
+    });
+    this.scrollToEditIndex();
+  };
+
+  scrollToEditIndex = () => {
+    this.refs[this.state.setActiveIndexEdit].scrollIntoView();
+  };
+
+  scrollToEditTop = () => {
+    this.refs.TopAddEvent.scrollIntoView();
+  };
+
+  setActiveIndexEdit = index => {
+    this.setState({ setActiveIndexEdit: index });
+  };
+
   handleClick = (e, index) => {
     e.preventDefault();
     this.setState({ activeIndex: index });
@@ -67,8 +105,20 @@ class AddPartners extends Component {
     ref.remove();
   };
 
+  editPartner = (e, partnerID, name, location, logo, website) => {
+    e.preventDefault();
+    this.setState({
+      partnerID: partnerID,
+      name: name,
+      location: location,
+      logo: logo,
+      website: website,
+      edit: true
+    });
+  };
+
   render() {
-    const { name, location, website, logo, errorMessage } = this.state;
+    const { name, location, website, logo, errorMessage, edit } = this.state;
 
     const myPartners =
       this.props.partnerList &&
@@ -79,7 +129,7 @@ class AddPartners extends Component {
             : "d-none";
         return (
           <>
-            <div className="mt-3 h6" key={item.partnerID}>
+            <div className="mt-3 h6" key={item.partnerID} ref={index}>
               <ul class="list-group">
                 <li class="list-group-item">Name: {item.name}</li>
                 <li class="list-group-item">Location: {item.location}</li>
@@ -108,6 +158,23 @@ class AddPartners extends Component {
                         No
                       </div>
                     </div>
+                    <div
+                      className="f-links pl-2"
+                      onClick={e => {
+                        this.editPartner(
+                          e,
+                          item.partnerID,
+                          item.name,
+                          item.location,
+                          item.logo,
+                          item.website
+                        );
+                        this.setActiveIndexEdit(index);
+                        this.scrollToEditTop();
+                      }}
+                    >
+                      edit
+                    </div>
                   </div>
                 </li>
               </ul>
@@ -121,7 +188,10 @@ class AddPartners extends Component {
         <div className="container">
           <div className="col-12 top-placeholder" />
           <div className="row justify-content-center">
-            <div className="col-12 h1 title-padding text-center">
+            <div
+              className="col-12 h1 title-padding text-center"
+              ref="TopAddEvent"
+            >
               ADD PARTNERS
             </div>
           </div>
@@ -182,9 +252,18 @@ class AddPartners extends Component {
                     <FormError theMessage={errorMessage} />
                   ) : null}
                 </div>
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
+                {!edit ? (
+                  <button type="submit" className="btn btn-primary">
+                    Submit
+                  </button>
+                ) : (
+                  <div
+                    className="btn btn-success pointer"
+                    onClick={this.handelEdit}
+                  >
+                    Save Edit
+                  </div>
+                )}
                 <hr />
               </form>{" "}
               {/* unit start */}

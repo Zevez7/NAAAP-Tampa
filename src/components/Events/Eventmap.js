@@ -41,7 +41,7 @@ class Eventmap extends Component {
         .slice(this.sliceNumber())
         .slice(0, `${this.props.home_number}`)
         .map(item => (
-          <div className="row justify-content-center my-4" key={item.number}>
+          <div className="row justify-content-center my-4" key={item.eventID}>
             <div className="col-lg-3 col-4 px-3 pt-4 bg-gray shadow-custom">
               <div className="col-12 text-center p-0">
                 {dateFormat(item.date, "d")}

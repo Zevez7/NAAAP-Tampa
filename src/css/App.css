@@ -7,15 +7,13 @@
 }
 
 /* general  */
+html,
 body {
-  background-image: linear-gradient(
-    to right top,
-    #ffffff,
-    #fffaff,
-    #fcf8f8,
-    #fffaef,
-    #f7facc
-  );
+  min-height: 100vh;
+  overflow: auto;
+}
+body {
+  background: #fff;
   font-family: "Roboto", sans-serif;
   color: var(--gray) !important;
   font-weight: 500;
@@ -58,7 +56,15 @@ body {
   padding: 5rem 1rem;
 }
 
+.top-placeholder {
+  height: 70px;
+}
+
+.btm-placeholder {
+  height: 70px;
+}
 /* nav */
+
 .underline {
   border-bottom: 3px solid transparent;
 }
@@ -126,9 +132,6 @@ img.social {
 }
 
 /* about us */
-.top-placeholder {
-  height: 70px;
-}
 
 /* members */
 .fa-user-profile {
@@ -197,4 +200,42 @@ img.social {
 .f-links:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+
+/* Addjobs */
+
+.min-height {
+  min-height: 100px;
+}
+
+.list-group-item {
+  word-wrap: break-word;
+}
+
+/* jobs */
+
+.block-with-text {
+  overflow: hidden;
+  line-height: 1.5em;
+  max-height: 7.5em;
+  text-align: justify;
+}
+
+a.remove-styling {
+  text-decoration: none !important;
+  color: var(--gray);
+}
+
+a.remove-styling:hover {
+  text-decoration: none !important;
+  color: var(--gray);
+}
+
+.bg-color:hover {
+  background-color: rgb(238, 238, 238);
+}
+
+/* jobdetails */
+.top_margin {
+  margin-top: 6rem;
 }

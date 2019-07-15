@@ -52,22 +52,29 @@ export default class Nav extends Component {
                   MEMBERS
                 </Link>
               </li>
-              <li className="nav-item active text-nowrap">
-                <Link to="/aboutus" className="nav-link ">
-                  ABOUT
-                </Link>
-              </li>
+
               <li className="nav-item active">
                 <Link to="/partners" className="nav-link">
                   PARTNERS
                 </Link>
               </li>
-
               <li className="nav-item active">
-                <a className="nav-link" href="https://tampa.naaap.org/join">
-                  MEMBERSHIP
-                </a>
+                <Link to="/jobs" className="nav-link">
+                  JOBS
+                </Link>
               </li>
+              <li className="nav-item active text-nowrap">
+                <Link to="/aboutus" className="nav-link ">
+                  ABOUT
+                </Link>
+              </li>
+              {user && (
+                <li className="nav-item active">
+                  <Link className="nav-link" to="/membership">
+                    MEMBERSHIP
+                  </Link>
+                </li>
+              )}
             </ul>
             <span className="navbar-text d-flex">
               <div className="pr-3 text-uppercase">{displayName} </div>

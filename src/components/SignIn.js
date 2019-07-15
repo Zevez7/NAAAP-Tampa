@@ -87,24 +87,17 @@ export default class Navbar extends Component {
                   onChange={this.handleChange}
                 />
               </div>
-
               <div className="my-3 errormsg">
                 {errorMessage !== null ? (
                   <FormError theMessage={errorMessage} />
                 ) : null}
               </div>
-
               <button type="submit" className="btn btn-primary">
                 Submit
               </button>
-
               {redirect_signin_success && <Redirect to="/" />}
-              <div className="col-12 top-placeholder" />
-              <div className="col-12 top-placeholder" />
-              <div className="col-12 top-placeholder" />
-              <div className="col-12 top-placeholder" />
-              <div className="col-12 top-placeholder" />
-              <div className="col-12 top-placeholder" />
+       
+          
             </form>
           </div>
         </div>

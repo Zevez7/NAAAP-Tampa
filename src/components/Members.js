@@ -5,11 +5,8 @@ import data_members from "../data/data_members.json";
 export default class Members extends Component {
   render() {
     const member_map = data_members.map(item => (
-      <div className="row p-4 border-bottom">
-        <div
-          className="col-lg-2 col-md-4 col-sm-4 col-4 fa-user-profile"
-          key={item.number}
-        >
+      <div className="row p-4 border-bottom" key={item.number}>
+        <div className="col-lg-2 col-md-4 col-sm-4 col-4 fa-user-profile">
           <FaUser />
         </div>
         <div className="col-lg-4 col-md-8 col-sm-8 col-8">
