@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import FormError from "./FormError";
-import firebase from "./Firebase";
+import FormError from "../Firebase/FormError";
+import firebase from "../Firebase/Firebase";
 import { Redirect } from "react-router-dom";
 
 export default class Register extends Component {
@@ -31,9 +31,6 @@ export default class Register extends Component {
         registrationInfo.email,
         registrationInfo.password
       )
-      .then(() => {
-        this.props.registerUser(registrationInfo.displayName);
-      })
       .catch(error => {
         if (error.message !== null) {
           this.setState({ errorMessage: error.message });
@@ -41,6 +38,9 @@ export default class Register extends Component {
         } else {
           this.setState({ errorMessage: null });
         }
+      })
+      .then(() => {
+        this.props.registerUser(registrationInfo.displayName);
       })
       .then(() => {
         this.setState({
@@ -143,7 +143,6 @@ export default class Register extends Component {
                 )}
 
                 {redirect_signup_success && <Redirect to="/" />}
-       
               </form>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import FormError from "./FormError";
-import firebase from "./Firebase";
+import FormError from "../Firebase/FormError";
+import firebase from "../Firebase/Firebase";
 import { Redirect } from "react-router-dom";
 
 export default class Navbar extends Component {
@@ -22,11 +22,11 @@ export default class Navbar extends Component {
   };
 
   handleSubmit = e => {
+    e.preventDefault();
     var registrationInfo = {
       email: this.state.email,
       password: this.state.password
     };
-    e.preventDefault();
 
     firebase
       .auth()
@@ -96,8 +96,6 @@ export default class Navbar extends Component {
                 Submit
               </button>
               {redirect_signin_success && <Redirect to="/" />}
-       
-          
             </form>
           </div>
         </div>

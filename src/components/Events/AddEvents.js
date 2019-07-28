@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import FormError from "../FormError";
-import firebase from "../Firebase";
+import FormError from "../Firebase/FormError";
+import firebase from "../Firebase/Firebase";
 import withAuth from "../HOC/withAuth";
 import { DateTime } from "luxon";
 
@@ -22,7 +22,6 @@ class AddEvents extends Component {
       errorMessage: null,
       redirect_addevents_success: false,
       activeIndex: null,
-      setActiveIndexEdit: null,
       edit: false
     };
   }
@@ -54,6 +53,7 @@ class AddEvents extends Component {
     this.addEvent();
 
     this.setState({
+      eventID: "",
       name: "",
       date: "",
       time: "",
@@ -69,6 +69,7 @@ class AddEvents extends Component {
     this.saveEdit();
 
     this.setState({
+      eventID: "",
       name: "",
       date: "",
       time: "",
@@ -91,19 +92,22 @@ class AddEvents extends Component {
       address: this.state.address,
       message: this.state.message
     });
-    this.scrollToEditIndex();
   };
-
-  scrollToEditIndex = () => {
-    this.refs[this.state.setActiveIndexEdit].scrollIntoView();
+  cancelEdit = e => {
+    this.setState({
+      name: "",
+      date: "",
+      time: "",
+      location: "",
+      meetup_rsvp: "",
+      address: "",
+      message: "",
+      edit: false
+    });
   };
 
   scrollToEditTop = () => {
     this.refs.TopAddEvent.scrollIntoView();
-  };
-
-  setActiveIndexEdit = index => {
-    this.setState({ setActiveIndexEdit: index });
   };
 
   handleClick = (e, index) => {
@@ -225,7 +229,6 @@ class AddEvents extends Component {
                           item.address,
                           item.message
                         );
-                        this.setActiveIndexEdit(index);
                         this.scrollToEditTop();
                       }}
                     >
@@ -242,19 +245,15 @@ class AddEvents extends Component {
     return (
       <div className="container">
         <div className="col-12 top-placeholder" />
-        <div className="row justify-content-center">
-          <div
-            className="col-12 h1 title-padding text-center"
-            ref="TopAddEvent"
-          >
-            ADD EVENTS
-          </div>
+
+        <div className="col-12 h1 title-padding text-center" ref="TopAddEvent">
+          ADD EVENTS
         </div>
-        <div className="row justify-content-center">
-          <div className="col-12 col-lg-6 col-md-8 col-sm-11">
+        <div className="row">
+          <div className="col-lg-6 col-md-6 col-sm-11 col-11">
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
-                <label htmlFor="name">Event Name</label>
+                <label htmlFor="name">Event Name - required</label>
                 <input
                   className="form-control"
                   type="text"
@@ -266,7 +265,7 @@ class AddEvents extends Component {
                 />
               </div>{" "}
               <div className="form-group">
-                <label htmlFor="date">Date</label>
+                <label htmlFor="date">Date - required</label>
                 <input
                   className="form-control"
                   type="date"
@@ -278,7 +277,7 @@ class AddEvents extends Component {
                 />
               </div>{" "}
               <div className="form-group">
-                <label htmlFor="time">Time</label>
+                <label htmlFor="time">Time (ex: 3pm-5:30pm)</label>
                 <input
                   className="form-control"
                   type="text"
@@ -289,24 +288,24 @@ class AddEvents extends Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="location">Location Name</label>
+                <label htmlFor="location">Location Name - required</label>
                 <input
                   className="form-control"
                   type="location"
                   name="location"
-                  placeholder="Location"
                   value={location}
                   onChange={this.handleChange}
                   required
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="meetup_rsvp">Meetup Link</label>
+                <label htmlFor="meetup_rsvp">
+                  Meetup Link (ex: https://www.meetup.com/)
+                </label>
                 <input
                   className="form-control"
-                  type="meetup_rsvp"
+                  type="url"
                   name="meetup_rsvp"
-                  placeholder="Meetup Link"
                   value={meetup_rsvp}
                   onChange={this.handleChange}
                 />
@@ -317,20 +316,19 @@ class AddEvents extends Component {
                   className="form-control"
                   type="address"
                   name="address"
-                  placeholder="Address"
                   value={address}
                   onChange={this.handleChange}
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="message">Message</label>
+                <label htmlFor="message">Message - required</label>
                 <textarea
                   className="form-control"
                   type="message"
                   name="message"
-                  placeholder="Message"
                   value={message}
                   onChange={this.handleChange}
+                  required
                 />
               </div>
               <div className="my-3 errormsg">
@@ -343,20 +341,32 @@ class AddEvents extends Component {
                   Submit
                 </button>
               ) : (
-                <div
-                  className="btn btn-success pointer"
-                  onClick={this.handelEdit}
-                >
-                  Save Edit
-                </div>
+                <>
+                  <div
+                    className="btn btn-success pointer"
+                    onClick={this.handelEdit}
+                  >
+                    Save Edit
+                  </div>
+
+                  <div
+                    className="btn btn-warning pointer ml-4"
+                    onClick={this.cancelEdit}
+                  >
+                    Cancel Edit
+                  </div>
+                </>
               )}
               <hr />
-            </form>{" "}
+            </form>
+          </div>
+
+          <div className="col-lg-6 col-md-6 col-sm-11 col-11 scroll-right-column">
             {/* unit start */}
             {myEvents}
             {/* unit end */}
-            <div className="col-12 top-placeholder" />
           </div>
+          <div className="col-12 top-placeholder" />
         </div>
       </div>
     );

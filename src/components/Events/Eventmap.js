@@ -15,13 +15,20 @@ class Eventmap extends Component {
   datestring = datedata => DateTime.fromISO(datedata);
 
   // return true is the date string is the future
-  isBeforeNow = dt1 => dt1 > DateTime.local();
+  isAfterNow = dt1 => dt1 < DateTime.local();
+
+  eventListSorted = () =>
+    this.props.eventsList.sort(
+      (a, b) => this.datestring(b.date) - this.datestring(a.date)
+    );
 
   sliceNumber = () => {
+    this.eventListSorted();
     for (let item in this.props.eventsList) {
       let date_string = this.props.eventsList[item]["date"];
       let date_value = this.datestring(date_string);
-      if (this.isBeforeNow(date_value)) {
+      if (this.isAfterNow(date_value)) {
+        console.log(item);
         return item;
       }
     }
@@ -30,15 +37,10 @@ class Eventmap extends Component {
   render() {
     const { dateFormat } = this.props;
 
-    this.props.eventsList &&
-      this.props.eventsList.sort(
-        (a, b) => this.datestring(a.date) - this.datestring(b.date)
-      );
-
     const myEvents =
       this.props.eventsList &&
       this.props.eventsList
-        .slice(this.sliceNumber())
+        .slice(0, this.sliceNumber())
         .slice(0, `${this.props.home_number}`)
         .map(item => (
           <div className="row justify-content-center my-4" key={item.eventID}>
@@ -58,7 +60,13 @@ class Eventmap extends Component {
               <div>{item.location}</div>
               <div>{item.address}</div>
               <div>
-                <a href={item.meetup_rsvp}>RSVP @ MeetUp.com</a>
+                <a
+                  href={item.meetup_rsvp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  RSVP @ MeetUp.com
+                </a>
               </div>
             </div>
             <div className="col-12 pt-4">

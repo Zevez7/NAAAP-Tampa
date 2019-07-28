@@ -13,7 +13,7 @@ class Jobs extends Component {
     DateTime.fromISO(dateData).toFormat(format);
 
   render() {
-    const { user } = this.props;
+    const { role } = this.props;
 
     this.props.jobList &&
       this.props.jobList.sort(
@@ -53,7 +53,7 @@ class Jobs extends Component {
           <div className="row justify-content-center">
             <div className="col-12 h1 title-padding text-center">JOBS</div>
           </div>
-          {user && (
+          {role === "admin" && (
             <Link to="/addjobs">
               <button type="button" className="btn btn-primary">
                 Add Jobs
@@ -68,7 +68,7 @@ class Jobs extends Component {
               <div className="h3"> Tampa-bay Local Jobs</div>
               <p>
                 Local Tampa-Bay businesses are looking to hire asian
-                professionals from the communities. Check job listing to find
+                professionals from the communities. Check the job listing for
                 the latest job posting.
               </p>
               <p>
@@ -86,6 +86,7 @@ class Jobs extends Component {
           {myjobs}
 
           {/* unit */}
+          <div className="btm-placeholder" />
         </div>
       </>
     );

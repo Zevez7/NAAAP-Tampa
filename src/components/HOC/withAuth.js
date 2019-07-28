@@ -1,14 +1,11 @@
 import React from "react";
-import firebase from "../Firebase";
+import firebase from "../Firebase/Firebase";
 
 const withAuth = (WrappedComponent, redirectPath) => {
   class WithAuth extends React.Component {
-    componentWillMount() {
+    componentDidMount() {
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
-          this.setState({
-            userUID: user.uid
-          });
         } else {
           return this.props.history.push(redirectPath);
         }

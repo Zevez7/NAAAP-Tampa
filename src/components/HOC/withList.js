@@ -1,5 +1,5 @@
 import React from "react";
-import firebase from "../Firebase";
+import firebase from "../Firebase/Firebase";
 import { DateTime } from "luxon";
 
 const withList = WrappedComponent => {

@@ -23,7 +23,7 @@ class Partners extends Component {
   };
 
   render() {
-    const { user } = this.props;
+    const { role } = this.props;
 
     console.log(this.imageList());
 
@@ -71,7 +71,7 @@ class Partners extends Component {
           <div className="row justify-content-center">
             <div className="col-12 h1 title-padding text-center">PARTNERS</div>
           </div>
-          {user && (
+          {role === "admin" && (
             <Link to="/addpartners">
               <button type="button" className="btn btn-primary">
                 Add Partners

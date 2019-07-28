@@ -8,7 +8,7 @@ export default class Hero extends Component {
           className="container-fluid background  "
           style={{
             backgroundImage:
-              `url(` + require(`../images/${this.props.image}.jpg`) + `)`
+              `url(` + require(`../../images/${this.props.image}.jpg`) + `)`
           }}
         >
           <div className="row justify-content-start pt-5">
@@ -16,7 +16,7 @@ export default class Hero extends Component {
               <div className="p-3 bg-title  rounded-bottom shadow-custom">
                 <span className="subtitle">
                   National Association of Asian American Professionals
-                </span>{" "}
+                </span>
                 <br />
                 <span className="h1"> Tampa Bay</span>
                 <br />

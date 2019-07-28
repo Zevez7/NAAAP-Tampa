@@ -1,12 +1,14 @@
 import React, { Component } from "react";
-import FormError from "../FormError";
-import firebase from "../Firebase";
+import FormError from "../Firebase/FormError";
+import firebase from "../Firebase/Firebase";
 import withAuth from "../HOC/withAuth";
 import { DateTime } from "luxon";
 
 class AddJobs extends Component {
   constructor(props) {
     super(props);
+
+    this.onChange = editorState => this.setState({ editorState });
 
     this.state = {
       JobID: "",
@@ -23,18 +25,22 @@ class AddJobs extends Component {
       Language: "",
       Contact_name: "",
       Contact: "",
+      Website: "",
       Date: "",
       errorMessage: null,
       redirect_addevents_success: false,
       activeIndex: null,
-      setActiveIndexEdit: null,
       edit: false
     };
   }
 
+
+
   dateFormat = dateData =>
     DateTime.fromISO(dateData).toLocaleString(DateTime.DATETIME_MED);
+
   datestring = datedata => DateTime.fromISO(datedata);
+
   now = () => DateTime.local().toISO();
 
   handleChange = e => {
@@ -60,51 +66,49 @@ class AddJobs extends Component {
       Language: this.state.Language,
       Contact_name: this.state.Contact_name,
       Contact: this.state.Contact,
+      Website: this.state.Website,
       Date: this.now()
+    });
+  };
+
+  resetState = e => {
+    this.setState({
+      Title: "",
+      Company: "",
+      Address: "",
+      Description: "",
+      Skills: "",
+      Type: "",
+      Pay: "",
+      Experience: "",
+      Authorization: "",
+      Benefits: "",
+      Language: "",
+      Contact_name: "",
+      Contact: "",
+      Website: "",
+      Date: ""
     });
   };
 
   handleSubmit = e => {
     e.preventDefault();
     this.addJob();
-
-    this.setState({
-      Title: "",
-      Company: "",
-      Address: "",
-      Description: "",
-      Skills: "",
-      Type: "",
-      Pay: "",
-      Experience: "",
-      Authorization: "",
-      Benefits: "",
-      Language: "",
-      Contact_name: "",
-      Contact: "",
-      Date: ""
-    });
+    this.resetState();
   };
 
   handelEdit = e => {
     e.preventDefault();
     this.saveEdit();
-
+    this.resetState();
     this.setState({
-      Title: "",
-      Company: "",
-      Address: "",
-      Description: "",
-      Skills: "",
-      Type: "",
-      Pay: "",
-      Experience: "",
-      Authorization: "",
-      Benefits: "",
-      Language: "",
-      Contact_name: "",
-      Contact: "",
-      Date: "",
+      edit: false
+    });
+  };
+
+  cancelEdit = e => {
+    this.resetState();
+    this.setState({
       edit: false
     });
   };
@@ -125,21 +129,13 @@ class AddJobs extends Component {
       Language: this.state.Language,
       Contact_name: this.state.Contact_name,
       Contact: this.state.Contact,
+      Website: this.state.Website,
       Date: this.now()
     });
-    this.scrollToEditIndex();
-  };
-
-  scrollToEditIndex = () => {
-    this.refs[this.state.setActiveIndexEdit].scrollIntoView();
   };
 
   scrollToEditTop = () => {
     this.refs.TopPage.scrollIntoView();
-  };
-
-  setActiveIndexEdit = index => {
-    this.setState({ setActiveIndexEdit: index });
   };
 
   handleClick = (e, index) => {
@@ -165,16 +161,16 @@ class AddJobs extends Component {
     Company,
     Address,
     Description,
+    Contact,
+    Contact_name,
+    Website,
     Skills,
     Type,
     Pay,
     Experience,
     Authorization,
     Benefits,
-    Language,
-    Contact_name,
-    Contact,
-    postDate
+    Language
   ) => {
     e.preventDefault();
     this.setState({
@@ -192,7 +188,7 @@ class AddJobs extends Component {
       Language: Language,
       Contact_name: Contact_name,
       Contact: Contact,
-      Date: postDate,
+      Website: Website,
       edit: true
     });
   };
@@ -203,6 +199,9 @@ class AddJobs extends Component {
       Company,
       Address,
       Description,
+      Contact_name,
+      Contact,
+      Website,
       Skills,
       Type,
       Pay,
@@ -210,18 +209,16 @@ class AddJobs extends Component {
       Authorization,
       Benefits,
       Language,
-      Contact_name,
-      Contact,
       errorMessage,
       edit
     } = this.state;
-    this.props.jobList && console.log(this.props.jobList);
+
     this.props.jobList &&
       this.props.jobList.sort(
         (a, b) => this.datestring(b.Date) - this.datestring(a.Date)
       );
 
-    const myEvents =
+    const myJobs =
       this.props.jobList &&
       this.props.jobList.map((item, index) => {
         const className =
@@ -231,32 +228,54 @@ class AddJobs extends Component {
         return (
           <>
             <div className="mt-3 h6" key={item.JobID} ref={index}>
-              <ul className="list-group ">
-                <li className="list-group-item">Title: {item.Title}</li>
-                <li className="list-group-item">JobID: {item.JobID}</li>
-                <li className="list-group-item">Company: {item.Company}</li>
-                <li className="list-group-item">Address: {item.Address}</li>
+              <ul className="list-group">
                 <li className="list-group-item">
-                  Description: {item.Description}
+                  <strong>Title:</strong> {item.Title}
                 </li>
                 <li className="list-group-item">
-                  Contact_name: {item.Contact_name}
-                </li>
-                <li className="list-group-item">Contact: {item.Contact}</li>
-                <li className="list-group-item">Job Type: {item.Type}</li>
-                <li className="list-group-item">Skills: {item.Skills}</li>
-                <li className="list-group-item">Pay: {item.Pay}</li>
-                <li className="list-group-item">
-                  Experience: {item.Experience}
+                  <strong>JobID:</strong> {item.JobID}
                 </li>
                 <li className="list-group-item">
-                  Authorization: {item.Authorization}
+                  <strong>Company:</strong> {item.Company}
                 </li>
-                <li className="list-group-item">Benefits: {item.Benefits}</li>
-                <li className="list-group-item">Language: {item.Language}</li>
-
                 <li className="list-group-item">
-                  Date Posted: {this.dateFormat(item.Date)}
+                  <strong>Address:</strong> {item.Address}
+                </li>
+                <li className="list-group-item">
+                  <strong>Description:</strong> {item.Description}
+                </li>
+                <li className="list-group-item">
+                  <strong>Contact Name:</strong> {item.Contact_name}
+                </li>
+                <li className="list-group-item">
+                  <strong>Contact:</strong> {item.Contact}
+                </li>
+                <li className="list-group-item">
+                  <strong>Website:</strong> {item.Website}
+                </li>
+                <li className="list-group-item">
+                  <strong>Job Type:</strong> {item.Type}
+                </li>
+                <li className="list-group-item">
+                  <strong>Skills:</strong> {item.Skills}
+                </li>
+                <li className="list-group-item">
+                  <strong>Pay:</strong> {item.Pay}
+                </li>
+                <li className="list-group-item">
+                  <strong>Experience: </strong> {item.Experience}
+                </li>
+                <li className="list-group-item">
+                  <strong>Authorization:</strong> {item.Authorization}
+                </li>
+                <li className="list-group-item">
+                  <strong>Benefits:</strong> {item.Benefits}
+                </li>
+                <li className="list-group-item">
+                  <strong>Language:</strong> {item.Language}
+                </li>
+                <li className="list-group-item">
+                  <strong>Date Posted:</strong> {this.dateFormat(item.Date)}
                 </li>
                 <li className="list-group-item">
                   <div className="d-flex flex-row">
@@ -293,17 +312,15 @@ class AddJobs extends Component {
                           item.Description,
                           item.Contact,
                           item.Contact_name,
+                          item.Website,
                           item.Skills,
                           item.Type,
                           item.Pay,
                           item.Experience,
                           item.Authorization,
                           item.Benefits,
-                          item.Language,
-
-                          item.Date
+                          item.Language
                         );
-                        this.setActiveIndexEdit(index);
                         this.scrollToEditTop();
                       }}
                     >
@@ -320,13 +337,9 @@ class AddJobs extends Component {
     return (
       <div className="container">
         <div className="col-12 top-placeholder" />
-        <div className="row justify-content-center">
-          <div className="col-12 h1 title-padding text-center" ref="TopPage">
-            ADD JOBS
-          </div>
-        </div>
-        <div className="row justify-content-center">
-          <div className="col-12 col-lg-6 col-md-8 col-sm-11">
+        <div className="col-12 h1 title-padding text-center">ADD JOBS</div>
+        <div className="row">
+          <div className="col-lg-6 col-md-6 col-sm-11 col-11">
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label htmlFor="Title">Title - required</label>
@@ -334,7 +347,6 @@ class AddJobs extends Component {
                   className="form-control"
                   type="text"
                   name="Title"
-                  placeholder="Title"
                   value={Title}
                   onChange={this.handleChange}
                   required
@@ -346,7 +358,6 @@ class AddJobs extends Component {
                   className="form-control"
                   type="text"
                   name="Company"
-                  placeholder="Company"
                   value={Company}
                   onChange={this.handleChange}
                   required
@@ -358,7 +369,6 @@ class AddJobs extends Component {
                   className="form-control"
                   type="text"
                   name="Address"
-                  placeholder="Address"
                   value={Address}
                   onChange={this.handleChange}
                   required
@@ -366,11 +376,11 @@ class AddJobs extends Component {
               </div>
               <div className="form-group">
                 <label htmlFor="Description">Description - required</label>
+
                 <textarea
                   className="form-control min-height"
                   type="text"
                   name="Description"
-                  placeholder="Description"
                   value={Description}
                   onChange={this.handleChange}
                   required
@@ -382,7 +392,6 @@ class AddJobs extends Component {
                   className="form-control"
                   type="text"
                   name="Contact"
-                  placeholder="Contact"
                   value={Contact}
                   onChange={this.handleChange}
                   required
@@ -394,8 +403,19 @@ class AddJobs extends Component {
                   className="form-control"
                   type="text"
                   name="Contact_name"
-                  placeholder="Contact Name"
                   value={Contact_name}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="Website">
+                  Job Posting Link (ex: https://www.google.com/)
+                </label>
+                <input
+                  className="form-control"
+                  type="url"
+                  name="Website"
+                  value={Website}
                   onChange={this.handleChange}
                 />
               </div>{" "}
@@ -405,7 +425,6 @@ class AddJobs extends Component {
                   className="form-control"
                   type="text"
                   name="Skills"
-                  placeholder="Skills"
                   value={Skills}
                   onChange={this.handleChange}
                 />
@@ -416,7 +435,6 @@ class AddJobs extends Component {
                   className="form-control"
                   type="text"
                   name="Type"
-                  placeholder="Type"
                   value={Type}
                   onChange={this.handleChange}
                 />
@@ -427,7 +445,6 @@ class AddJobs extends Component {
                   className="form-control"
                   type="text"
                   name="Pay"
-                  placeholder="Pay"
                   value={Pay}
                   onChange={this.handleChange}
                 />
@@ -438,7 +455,6 @@ class AddJobs extends Component {
                   className="form-control"
                   type="text"
                   name="Experience"
-                  placeholder="Experience"
                   value={Experience}
                   onChange={this.handleChange}
                 />
@@ -449,7 +465,6 @@ class AddJobs extends Component {
                   className="form-control"
                   type="text"
                   name="Authorization"
-                  placeholder="Authorization"
                   value={Authorization}
                   onChange={this.handleChange}
                 />
@@ -460,7 +475,6 @@ class AddJobs extends Component {
                   className="form-control"
                   type="text"
                   name="Benefits"
-                  placeholder="Benefits"
                   value={Benefits}
                   onChange={this.handleChange}
                 />
@@ -471,7 +485,6 @@ class AddJobs extends Component {
                   className="form-control"
                   type="text"
                   name="Language"
-                  placeholder="Language"
                   value={Language}
                   onChange={this.handleChange}
                 />
@@ -486,20 +499,34 @@ class AddJobs extends Component {
                   Submit
                 </button>
               ) : (
-                <div
-                  className="btn btn-success pointer"
-                  onClick={this.handelEdit}
-                >
-                  Save Edit
-                </div>
+                <>
+                  <div
+                    className="btn btn-success pointer"
+                    onClick={this.handelEdit}
+                  >
+                    Save Edit
+                  </div>
+
+                  <div
+                    className="btn btn-warning pointer ml-4"
+                    onClick={this.cancelEdit}
+                  >
+                    Cancel Edit
+                  </div>
+                </>
               )}
               <hr />
             </form>
-            {/* unit start */}
-            {myEvents}
-            {/* unit end */}
-            <div className="col-12 top-placeholder" />
           </div>
+          <div
+            className="col-lg-6 col-md-6 col-sm-11 col-11 scroll-right-column"
+            ref="TopPage"
+          >
+            {/* unit start */}
+            {myJobs}
+            {/* unit end */}
+          </div>
+          <div className="col-12 top-placeholder" />
         </div>
       </div>
     );

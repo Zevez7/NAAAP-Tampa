@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FaUser } from "react-icons/fa";
-import data_members from "../data/data_members.json";
+import data_members from "../../data/data_members.json";
 
 export default class Members extends Component {
   render() {

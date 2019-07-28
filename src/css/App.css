@@ -3,7 +3,7 @@
 :root {
   --gray: #414141;
   --light_yellow: #ffffe0;
-  --darkpurple: #84163a;
+  --darkpurple: #eb1228;
 }
 
 /* general  */
@@ -13,7 +13,7 @@ body {
   overflow: auto;
 }
 body {
-  background: #fff;
+  background: #f7f6f6;
   font-family: "Roboto", sans-serif;
   color: var(--gray) !important;
   font-weight: 500;
@@ -33,7 +33,14 @@ body {
 }
 
 .bg-naap {
-  background-image: linear-gradient(to top, #62172f, #84163a);
+  background-image: linear-gradient(
+    to top,
+    #ad0000,
+    #bc040a,
+    #cc0814,
+    #db0d1e,
+    #eb1228
+  );
 }
 
 .shadow-custom {
@@ -85,7 +92,7 @@ li.nav-item:hover {
   text-decoration: none !important;
 }
 
-.logout-class:hover {
+.logout-class {
   color: white;
 }
 /* hero */
@@ -238,4 +245,11 @@ a.remove-styling:hover {
 /* jobdetails */
 .top_margin {
   margin-top: 6rem;
+}
+
+/* addpartner */
+
+.scroll-right-column {
+  height: 900px;
+  overflow-y: scroll;
 }

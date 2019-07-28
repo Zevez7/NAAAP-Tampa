@@ -2,42 +2,28 @@ import React, { Component } from "react";
 import "../css/App.css";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import firebase from "./Firebase/Firebase";
+import { DateTime } from "luxon";
 
-import Hero from "./Hero";
-import Content from "./Content";
+import Home from "./Home/Home";
 import Aboutus from "./Aboutus";
-import Social from "./Social";
-import Nav from "./Nav";
+import Nav from "./Nav/Nav";
 import Events from "./Events/Events";
-import Members from "./Members";
+import Members from "./Membership/Members";
 import Partners from "./Partners/Partners";
-import ScrollToTop from "./ScrollToTop";
-import NotFound from "./Not_Found";
-import SignUp from "./SignUp";
-import SignIn from "./SignIn";
-
-import firebase from "./Firebase";
-import Membership from "./Membership";
+import ScrollToTop from "./Nav/ScrollToTop";
+import NotFound from "./Nav/Not_Found";
+import SignUp from "./Register/SignUp";
+import SignIn from "./Register/SignIn";
+import Membership from "./Membership/Membership";
 import AddEvents from "./Events/AddEvents";
 import AddPartners from "./Partners/AddPartners";
 import Jobs from "./Jobs/Jobs";
 import AddJobs from "./Jobs/Addjobs";
 import JobDetails from "./Jobs/JobDetails";
+import AddMembership from "./Membership/AddMembership";
 
 // this allows link that is clicked to start at the top of the window
-
-class Home extends Component {
-  render() {
-    return (
-      <>
-        <div className="col-12 top-placeholder" />
-        <Hero image="lovehero-min" />
-        <Content />
-        <Social />
-      </>
-    );
-  }
-}
 
 export default class App extends Component {
   constructor(props) {
@@ -49,6 +35,8 @@ export default class App extends Component {
       userID: null
     };
   }
+
+  now = () => DateTime.local().toISO();
 
   componentDidMount() {
     const refEvent = firebase.database().ref("events/");
@@ -113,11 +101,31 @@ export default class App extends Component {
           Language: jobs[item].Language,
           Contact_name: jobs[item].Contact_name,
           Contact: jobs[item].Contact,
+          Website: jobs[item].Website,
           Date: jobs[item].Date
         });
       }
       this.setState({
         jobList: jobList
+      });
+    });
+
+    const refUsers = firebase.database().ref("users/userown/");
+    refUsers.on("value", snapshot => {
+      let users = snapshot.val();
+      let userOwnList = [];
+
+      for (let item in users) {
+        userOwnList.push({
+          userID: item,
+          email: users[item].email,
+          userName: users[item].userName,
+          userRole: users[item].role,
+          activeDate: users[item].activeDate
+        });
+      }
+      this.setState({
+        userOwnList: userOwnList
       });
     });
 
@@ -128,35 +136,73 @@ export default class App extends Component {
         this.setState({
           user: FBUser,
           displayName: FBUser.displayName,
-          userID: FBUser.uid
+          userID: FBUser.uid,
+          userEmail: FBUser.email
         });
       } else {
         // if no user if found on auth change / sign-in, set user as null
         this.setState({ user: null });
       }
+      if (this.state.userID) {
+        const refMembership = firebase
+          .database()
+          .ref(`users/userown/${this.state.userID}`);
+        refMembership.on("value", snapshot => {
+          let userMembership = snapshot.val();
+
+          if (userMembership) {
+            this.setState({
+              userMembership: userMembership,
+              role: userMembership.role
+            });
+          }
+        });
+      }
     });
   }
+  // component did mount end
 
   logOutHandler = () => {
     this.setState({
       user: null,
       displayName: null,
-      userID: null
+      userID: null,
+      role: null,
+      activeDate: null,
+      userEmail: null,
+      userMembership: null
     });
     firebase.auth().signOut();
   };
 
+  // adding user to the database
+  addUser = () => {
+    const refUserOwn = firebase
+      .database()
+      .ref(`users/userown/${this.state.userID}`);
+    refUserOwn.set({
+      email: this.state.userEmail,
+      userName: this.state.displayName,
+      role: "user",
+      activeDate: "inactive"
+    });
+  };
+
+  // auth registration of user
   registerUser = userName => {
     firebase.auth().onAuthStateChanged(FBUser => {
       FBUser.updateProfile({
         displayName: userName
-      }).then(() => {
-        this.setState({
-          user: FBUser,
-          displayName: FBUser.displayName,
-          userID: FBUser.uid
-        });
-      });
+      })
+        .then(() => {
+          this.setState({
+            user: FBUser,
+            displayName: FBUser.displayName,
+            userID: FBUser.uid,
+            userEmail: FBUser.email
+          });
+        })
+        .then(() => this.addUser());
     });
   };
 
@@ -167,8 +213,15 @@ export default class App extends Component {
       userID,
       eventsList,
       partnerList,
-      jobList
+      jobList,
+      userMembership,
+      userOwnList,
+      role
     } = this.state;
+
+    // if (this.state.userOwnList && this.state.userReadableList) {
+    //   return this.adminList();
+    // }
 
     return (
       <Router>
@@ -184,13 +237,17 @@ export default class App extends Component {
               <Route path="/aboutus" render={props => <Aboutus {...props} />} />
               <Route
                 path="/events"
-                render={props => <Events {...props} user={user} />}
+                render={props => <Events {...props} role={role} />}
               />
               <Route path="/members" render={props => <Members {...props} />} />
               <Route
                 path="/signup"
                 render={props => (
-                  <SignUp {...props} registerUser={this.registerUser} />
+                  <SignUp
+                    {...props}
+                    registerUser={this.registerUser}
+                    addUser={this.addUser}
+                  />
                 )}
               />
               <Route
@@ -201,11 +258,11 @@ export default class App extends Component {
               />
               <Route
                 path="/partners"
-                render={props => <Partners {...props} user={user} />}
+                render={props => <Partners {...props} role={role} />}
               />
               <Route
                 path="/jobs"
-                render={props => <Jobs {...props} user={user} />}
+                render={props => <Jobs {...props} role={role} />}
               />
               <Route
                 exact
@@ -216,6 +273,7 @@ export default class App extends Component {
                     displayName={displayName}
                     userID={userID}
                     eventsList={eventsList}
+                    role={role}
                   />
                 )}
               />
@@ -264,9 +322,23 @@ export default class App extends Component {
               <Route
                 path="/membership"
                 render={props => (
-                  <Membership {...props} displayName={displayName} />
+                  <Membership
+                    {...props}
+                    displayName={displayName}
+                    userMembership={userMembership}
+                    role={role}
+                  />
                 )}
               />
+
+              <Route
+                path="/addmembership"
+                render={props => (
+                  <AddMembership {...props} userOwnList={userOwnList} />
+                )}
+              />
+
+              {/* set default render to notfound if path is unknown */}
               <Route component={NotFound} />
             </Switch>
           </main>

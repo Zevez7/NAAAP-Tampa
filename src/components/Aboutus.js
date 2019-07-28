@@ -32,13 +32,11 @@ export default class Aboutus extends Component {
                 <a href="https://www.naaap.org/">
                   National Association of Asian American Professionals
                 </a>{" "}
-                Official Website
               </div>
               <div>
                 <a href="https://tampa.naaap.org/cpages/home">
                   Tampa Bay National Association of Asian American Professionals
                 </a>{" "}
-                Official Website
               </div>
             </div>
           </div>

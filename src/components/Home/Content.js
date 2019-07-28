@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Eventmap from "../components/Events/Eventmap";
+import Eventmap from "../Events/Eventmap";
 
 export default class Content extends Component {
   render() {

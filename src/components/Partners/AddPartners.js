@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import FormError from "../FormError";
+import FormError from "../Firebase/FormError";
 import withAuth from "../HOC/withAuth";
 
-import firebase from "../Firebase";
+import firebase from "../Firebase/Firebase";
 
 class AddPartners extends Component {
   constructor(props) {
@@ -15,8 +15,7 @@ class AddPartners extends Component {
       logo: "",
       errorMessage: null,
       activeIndex: null,
-      edit: false,
-      setActiveIndexEdit: null
+      edit: false
     };
   }
 
@@ -44,24 +43,15 @@ class AddPartners extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.addPartners();
-
-    this.setState({
-      name: "",
-      location: "",
-      website: "",
-      logo: ""
-    });
+    this.resetState();
   };
 
   handelEdit = e => {
     e.preventDefault();
     this.saveEdit();
+    this.resetState();
 
     this.setState({
-      name: "",
-      location: "",
-      website: "",
-      logo: "",
       edit: false
     });
   };
@@ -74,19 +64,10 @@ class AddPartners extends Component {
       website: this.state.website,
       logo: this.state.logo
     });
-    this.scrollToEditIndex();
-  };
-
-  scrollToEditIndex = () => {
-    this.refs[this.state.setActiveIndexEdit].scrollIntoView();
   };
 
   scrollToEditTop = () => {
     this.refs.TopAddEvent.scrollIntoView();
-  };
-
-  setActiveIndexEdit = index => {
-    this.setState({ setActiveIndexEdit: index });
   };
 
   handleClick = (e, index) => {
@@ -114,6 +95,22 @@ class AddPartners extends Component {
       logo: logo,
       website: website,
       edit: true
+    });
+  };
+
+  cancelEdit = e => {
+    this.resetState();
+    this.setState({
+      edit: false
+    });
+  };
+
+  resetState = () => {
+    this.setState({
+      name: "",
+      location: "",
+      website: "",
+      logo: ""
     });
   };
 
@@ -169,7 +166,6 @@ class AddPartners extends Component {
                           item.logo,
                           item.website
                         );
-                        this.setActiveIndexEdit(index);
                         this.scrollToEditTop();
                       }}
                     >
@@ -187,16 +183,14 @@ class AddPartners extends Component {
       <>
         <div className="container">
           <div className="col-12 top-placeholder" />
-          <div className="row justify-content-center">
-            <div
-              className="col-12 h1 title-padding text-center"
-              ref="TopAddEvent"
-            >
-              ADD PARTNERS
-            </div>
+          <div
+            className="col-12 h1 title-padding text-center"
+            ref="TopAddEvent"
+          >
+            ADD PARTNERS
           </div>
-          <div className="row justify-content-center">
-            <div className="col-12 col-lg-6 col-md-8 col-sm-11">
+          <div className="row">
+            <div className="col-lg-6 col-md-6 col-sm-11 col-11">
               <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="name">Partner Name</label>
@@ -204,7 +198,6 @@ class AddPartners extends Component {
                     className="form-control"
                     type="text"
                     name="name"
-                    placeholder="Name"
                     value={name}
                     onChange={this.handleChange}
                     required
@@ -216,19 +209,19 @@ class AddPartners extends Component {
                     className="form-control"
                     type="location"
                     name="location"
-                    placeholder="Location"
                     value={location}
                     onChange={this.handleChange}
                     required
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="logo">Logo</label>
+                  <label htmlFor="logo">
+                    Logo (type a name and tell Dat about it)
+                  </label>
                   <input
                     className="form-control text-lowercase"
                     type="logo"
                     name="logo"
-                    placeholder="Logo"
                     value={logo}
                     onChange={this.handleChange}
                     onInput={this.toInputUppercase}
@@ -236,13 +229,12 @@ class AddPartners extends Component {
                 </div>
                 <div className="form-group">
                   <label htmlFor="website">
-                    Website (example: https://www.google.com/)
+                    Website Address (ex: https://www.google.com/)
                   </label>
                   <input
                     className="form-control"
-                    type="website"
+                    type="url"
                     name="website"
-                    placeholder="Website"
                     value={website}
                     onChange={this.handleChange}
                   />
@@ -257,20 +249,32 @@ class AddPartners extends Component {
                     Submit
                   </button>
                 ) : (
-                  <div
-                    className="btn btn-success pointer"
-                    onClick={this.handelEdit}
-                  >
-                    Save Edit
-                  </div>
+                  <>
+                    <div
+                      className="btn btn-success pointer"
+                      onClick={this.handelEdit}
+                    >
+                      Save Edit
+                    </div>
+
+                    <div
+                      className="btn btn-warning pointer ml-4"
+                      onClick={this.cancelEdit}
+                    >
+                      Cancel Edit
+                    </div>
+                  </>
                 )}
                 <hr />
               </form>{" "}
+            </div>
+            <div className="col-lg-6 col-md-6 col-sm-11 col-11 scroll-right-column">
               {/* unit start */}
               {myPartners}
               {/* unit end */}
-              <div className="col-12 top-placeholder" />
             </div>
+
+            <div className="col-12 top-placeholder" />
           </div>
         </div>
       </>

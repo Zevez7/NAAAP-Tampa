@@ -1,5 +1,5 @@
 import React from "react";
-import firebase from "../Firebase";
+import firebase from "../Firebase/Firebase";
 
 const withJobList = WrappedComponent => {
   class WithJobList extends React.Component {

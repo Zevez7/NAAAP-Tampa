@@ -25,6 +25,9 @@ class JobDetails extends Component {
             )}
 
             <div className="col-12 h5">{jobItem.Contact} </div>
+            {jobItem.Website && (
+              <div className="col-12 h5"> {jobItem.Website}</div>
+            )}
           </div>
           <div className="col-12 h2 gradient my-4" />
           <div className="row py-3 border-bottom">

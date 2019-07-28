@@ -17,7 +17,7 @@ export default class Nav extends Component {
   };
 
   render() {
-    const { logOutUser, user, displayName } = this.props;
+    const { logOutUser, user } = this.props;
     const { redirect_logout_success } = this.state;
 
     return (
@@ -27,7 +27,7 @@ export default class Nav extends Component {
             <span className="h3">
               <FaGlobeAmericas />
             </span>
-            <span className="h4 underline"> NAAAP </span>
+            <span className="h4 underline"> NAAAP TPA </span>
           </Link>
           <button
             className="navbar-toggler"
@@ -77,8 +77,6 @@ export default class Nav extends Component {
               )}
             </ul>
             <span className="navbar-text d-flex">
-              <div className="pr-3 text-uppercase">{displayName} </div>
-
               {!user && (
                 <Link to="/signin" className="pointer no-decoration">
                   <div className="underline">SIGN IN</div>
