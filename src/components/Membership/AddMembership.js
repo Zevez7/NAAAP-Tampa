@@ -15,7 +15,6 @@ class AddMembership extends Component {
       name: "",
       date: "",
       time: "",
-      errorMessage: null,
       redirect_addevents_success: false,
       activeIndex: null,
       edit: false

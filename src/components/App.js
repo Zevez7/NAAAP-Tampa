@@ -163,16 +163,20 @@ export default class App extends Component {
   // component did mount end
 
   logOutHandler = () => {
-    this.setState({
-      user: null,
-      displayName: null,
-      userID: null,
-      role: null,
-      activeDate: null,
-      userEmail: null,
-      userMembership: null
-    });
-    firebase.auth().signOut();
+    firebase
+      .auth()
+      .signOut()
+      .then(result => {
+        this.setState({
+          user: null,
+          displayName: null,
+          userID: null,
+          role: null,
+          activeDate: null,
+          userEmail: null,
+          userMembership: null
+        });
+      });
   };
 
   // adding user to the database
@@ -218,10 +222,6 @@ export default class App extends Component {
       userOwnList,
       role
     } = this.state;
-
-    // if (this.state.userOwnList && this.state.userReadableList) {
-    //   return this.adminList();
-    // }
 
     return (
       <Router>
